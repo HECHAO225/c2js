@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int isPlalindrome(char* str, int len)
+int isPlalindrome(char str[], int len)
 {
     int i;
     for(i = 0; i < len / 2; i++)
@@ -17,7 +17,7 @@ int isPlalindrome(char* str, int len)
 
 int main()
 {
-    char* str = "abcdedcba";
+    char* str = "abcdedca";
     int len = strlen(str);
     if (isPlalindrome(str, len) == 1)
     {
