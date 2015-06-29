@@ -33,10 +33,10 @@ program
     ;
 
 program_unit
-    : include_declaration  {$$ = $1;}
-    | function_declaration {$$ = $1;}
+    : include_declaration   {$$ = $1;}
+    | function_declaration  {$$ = $1;}
     | variable_declaration {$$ = $1;}
-    | comment              {$$ = $1;}
+    | comment               {$$ = $1;}
     ;
 
 include_declaration
@@ -54,7 +54,7 @@ string
     ;
 
 function_declaration
-    : type_specifier function_declarator compound_statement {$$ = "function " + $2 + $3; cout << $$ << endl;}
+    : type_specifier function_declarator compound_statement {$$ = "function " + $2 + $3;}
     ;
 
 type_specifier
@@ -173,7 +173,13 @@ equality_expression
     ;
 
 relational_expression
-    : shift_expression {$$ = $1;}
+    : shift_expression {
+        if ($1 == "\'\\0\'") {
+            $$ = "undefined";
+        } else {
+            $$ = $1;
+        }
+    }
     | relational_expression '<' shift_expression {$$ = $1 + $2 + $3;}
     | relational_expression '>' shift_expression {$$ = $1 + $2 + $3;}
     | relational_expression LE_OP shift_expression {$$ = $1 + $2 + $3;}
@@ -283,7 +289,7 @@ expression_statement
 
 selection_statement
     : IF '(' expression ')' statement {$$ = $1 + $2 + $3 + $4 + $5;}
-    | IF '(' expression ')' statement ELSE statement {$$ = $1 + $2 + $3 + $4 + $5 + $6 + $7;}
+    | IF '(' expression ')' statement ELSE statement {$$ = $1 + $2 + $3 + $4 + $5 + $6 + " " + $7;}
     ;
 
 iteration_statement

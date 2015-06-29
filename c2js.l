@@ -31,19 +31,20 @@ void showStr();
 "for"           { cout<<"FOR: 		"; showStr();  return(FOR);		}
 "while"         { cout<<"WHILE: 	"; showStr();  return(WHILE);	}
 "if"            { cout<<"IF: 		"; showStr();  return(IF);		}
-"else"          { cout<<"ELSE:      "; showStr();  return(ELSE);      }
+"else"          { cout<<"ELSE:      "; showStr();  return(ELSE);    }
 "int"           { cout<<"INT: 		"; showStr();  return(INT);		}
 "return"        { cout<<"RETURN: 	"; showStr();  return(RETURN);	}
 "void"          { cout<<"VOID: 		"; showStr();  return(VOID);	}
 "#include"      { cout<<"INCLUDE: 	"; showStr();  return(INCLUDE); }
 
-[a-zA-Z][a-zA-Z0-9]*  { cout<<"IDENTIFIER: 	"; showStr();  return(IDENTIFIER); }
+[a-zA-Z_][a-zA-Z0-9_]*  { cout<<"IDENTIFIER: 	"; showStr();  return(IDENTIFIER); }
 
 {Digit}*"."{Digit}+({E})?{FS}?  { cout<<"CONST:	"; showStr(); return(CONST); }
 {Digit}+"."{Digit}*({E})?{FS}?  { cout<<"CONST:	"; showStr(); return(CONST); }
-{Digit}              			{ cout<<"CONST:	"; showStr(); return(CONST); }
+{Digit}+              			{ cout<<"CONST:	"; showStr(); return(CONST); }
 
 \"(\\.|[^\\"])*\"        { cout<<"STRING_LITERAL: "; showStr(); return(STRING_LITERAL); }
+\'(\\.|[^\\'])*\'        { cout<<"STRING_LITERAL: "; showStr(); return(STRING_LITERAL); }
 
 "\\n"			{ /* ignore enter key*/ }
 [ \n\t\v\f] 	{ }
@@ -75,13 +76,6 @@ void showStr();
 "["      		{ cout<<"[:		"; showStr(); return('['); 		}
 "]"      		{ cout<<"]:		"; showStr(); return(']'); 		}
 "\""			{ cout<<"\":	"; showStr(); return('\"');		}
-
-
-
-[a-zA-Z][a-zA-Z0-9]*  printf("Var     : %s\n",yytext);
-[/+/%/*///-]          printf("Op      : %s\n",yytext);
-[0-9]+                printf("Int     : %s\n",yytext);
-[0-9]*[/.][0-9]+      printf("Float   : %s\n",yytext);
 
 .                     printf("Unknown : %c\n",yytext[0]);
 
