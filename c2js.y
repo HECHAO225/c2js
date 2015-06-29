@@ -54,7 +54,7 @@ string
     ;
 
 function_declaration
-    : type_specifier function_declarator compound_statement {$$ = "function" + $2 + $3;}
+    : type_specifier function_declarator compound_statement {$$ = "function" + $2 + $3; cout << $$ << endl;}
     ;
 
 type_specifier
@@ -94,9 +94,9 @@ parameter_declaration
     ;
 
 compound_statement
-    : '{' '}' {$$ = $1 + $2;}
-    | '{' statement_list '}' {$$ = $1 + $2 + $3;}
-    | '{' variable_declarations statement_list '}' {$$ = $1 + $2 + $3 + $4;}
+    : '{' '}' {$$ = $1 + $2; cout << "---------$$---------\n" << $$ << endl;}
+    | '{' statement_list '}' {$$ = $1 + $2 + $3; cout << "---------$$---------\n" << $$ << endl;}
+    | '{' variable_declarations statement_list '}' {$$ = $1 + $2 + $3 + $4; cout << "---------$$---------\n" << $$ << endl;}
     ;
 
 variable_declarations
@@ -133,6 +133,7 @@ expression
 
 assignment_expression
     : conditional_expression {$$ = $1;}
+    | unary_expression assignment_operator assignment_expression {$$ = $1 + $2 + $3;}
     ;
 
 conditional_expression
@@ -220,6 +221,15 @@ postfix_expression
     | postfix_expression DEC_OP {$$ = $1 + $2;}
     ;
 
+assignment_operator
+    : '=' {$$ = $1;}
+    | '+' {$$ = $1;}
+    | '-' {$$ = $1;}
+    | '*' {$$ = $1;}
+    | '/' {$$ = $1;}
+    | '%' {$$ = $1;}
+    ;
+
 primary_expression
     : IDENTIFIER {
         if ($1 == "printf") {
@@ -252,7 +262,7 @@ statement_list
     | statement_list statement {$$ = $1 +  $2;}
 
 statement
-    : compound_statement {$$ = $1;}
+    : compound_statement {$$ = $1; cout << "----- COMPOUND -----\n"}
     | expression_statement {$$ = $1;}
     | selection_statement {$$ = $1;}
     | iteration_statement {$$ = $1;}

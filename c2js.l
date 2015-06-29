@@ -31,6 +31,7 @@ void showStr();
 "for"           { cout<<"FOR: 		"; showStr();  return(FOR);		}
 "while"         { cout<<"WHILE: 	"; showStr();  return(WHILE);	}
 "if"            { cout<<"IF: 		"; showStr();  return(IF);		}
+"else"          { cout<<"ELSE:      "; showStr();  return(ELSE);      }
 "int"           { cout<<"INT: 		"; showStr();  return(INT);		}
 "return"        { cout<<"RETURN: 	"; showStr();  return(RETURN);	}
 "void"          { cout<<"VOID: 		"; showStr();  return(VOID);	}
@@ -41,6 +42,8 @@ void showStr();
 {Digit}*"."{Digit}+({E})?{FS}?  { cout<<"CONST:	"; showStr(); return(CONST); }
 {Digit}+"."{Digit}*({E})?{FS}?  { cout<<"CONST:	"; showStr(); return(CONST); }
 {Digit}              			{ cout<<"CONST:	"; showStr(); return(CONST); }
+
+\"(\\.|[^\\"])*\"        { cout<<"STRING_LITERAL: "; showStr(); return(STRING_LITERAL); }
 
 "\\n"			{ /* ignore enter key*/ }
 [ \n\t\v\f] 	{ }
