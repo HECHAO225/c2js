@@ -54,7 +54,8 @@ string
     ;
 
 function_declaration
-    : type_specifier function_declarator compound_statement {$$ = "function " + $2 + $3;}
+    : type_specifier function_declarator left_bracket compound_statement right_bracket {$$ = "function " + $2 + $3 + $4 + $5;}
+    | type_specifier function_declarator left_bracket right_bracket {$$ = "function " + $2 + $3 + $4;}
     ;
 
 type_specifier
@@ -93,18 +94,35 @@ parameter_declaration
     : type_specifier declarator {$$ = $2;}
     ;
 
+left_bracket
+	: '{'	{$$ = $1 + '\n'; 
+			tabNum++;
+			}
+	;
+
 compound_statement
-    : '{' '}' {$$ = $1 + '\n'+ $2 + '\n';}
-    | '{' statement_list '}'     {$$ = $1 + '\n' + $2 + $3 + '\n';}
-    | '{' variable_declarations statement_list '}'     {$$ = $1 + '\n' + $2 + $3 + $4 + '\n';}
+    :  statement_list     	{$$ = $1;}
+    | variable_declarations statement_list    {$$ = $1 + $2;}
     ;
-    
+
+right_bracket
+	: '}'	{$$ = ""; 
+			tabNum--;
+			for(int i = 0; i < tabNum; i++)
+				$$ = $$ + '\t';
+			$$ = $$ + $1 + '\n';
+			}
+	;
+
 variable_declarations
     : variable_declaration {$$ = $1;}
     | variable_declarations variable_declaration {$$ = $1 + $2;}
 
 variable_declaration
-    : type_specifier variable_declaration_list ';' {$$ = $1 + " " + $2 + $3 + "\n";}
+    : type_specifier variable_declaration_list ';' 	{ $$ = "";
+    												for(int i = 0; i < tabNum; i++)
+    													$$ = $$ + '\t';
+    												$$ = $$ + $1 + " " + $2 + $3 + "\n";}
     ;
 
 variable_declaration_list
@@ -275,7 +293,8 @@ statement_list
     | statement_list statement {$$ = $1 +  $2;}
 
 statement
-    : compound_statement {$$ = $1;}
+    : left_bracket right_bracket {$$ = $1 + $2;}
+    | left_bracket compound_statement right_bracket {$$ = $1 + $2 + $3;}
     | expression_statement {$$ = $1;}
     | selection_statement {$$ = $1;}
     | iteration_statement {$$ = $1;}
@@ -283,26 +302,76 @@ statement
     ;
 
 expression_statement
-    : ';' {$$ =  $1 + '\n';}
-    | expression ';' {$$ = $1 + $2;}
+    : ';' 	{ $$ = "";
+    		for(int i = 0; i < tabNum; i++)
+    			$$ = $$ + '\t';
+    		$$ =  $$ + $1 + '\n';
+    		}
+    | expression ';' 	{ $$ = "";
+    					for(int i = 0; i < tabNum; i++)
+    						$$ = $$ + '\t';
+    					$$ = $$ + $1 + $2 + '\n';}
+    ;
+for_expression_statement
+	: ';' 	{ $$ = $1;}
+    | expression ';' 	{ $$ = $1 + $2;}
     ;
 
 selection_statement
-    : IF '(' expression ')' statement {$$ = $1 + $2 + $3 + $4 + $5;}
-    | IF '(' expression ')' statement ELSE statement {$$ = $1 + $2 + $3 + $4 + $5 + $6 + " " + $7;}
+    : IF '(' expression ')' statement 	{ $$ = "";
+    									for(int i = 0; i < tabNum; i++)
+    										$$ = $$ + '\t';
+    									$$ = $$ + $1 + $2 + $3 + $4 + $5;
+    									}
+    | IF '(' expression ')' statement ELSE statement 	{ $$ = "";
+    													for(int i = 0; i < tabNum; i++)
+    														$$ = $$ + '\t';
+    													$$ = $$ + $1 + $2 + $3 + $4 + $5;
+    													for(int i = 0; i < tabNum; i++)
+    														$$ = $$ + '\t';
+    													$$ = $$ + $6 + " " + $7;
+    													}
     ;
 
 iteration_statement
-    : WHILE '(' expression ')' statement {$$ = $1 + $2 + $3 + $4 + $5;}
-    | FOR '(' expression_statement expression_statement ')' statement {$$ = $1 + $2 + $3 + $4 + $5 + $6;}
-    | FOR '(' expression_statement expression_statement expression ')' statement {$$ = $1 + $2 + $3 + $4 + $5 + $6 + $7;}
+    : WHILE '(' expression ')' statement 	{ $$ = "";
+    										for(int i = 0; i < tabNum; i++)
+    											$$ = $$ + '\t';
+    										$$ = $$ + $1 + $2 + $3 + $4 + $5;
+    										}
+    | FOR '(' for_expression_statement for_expression_statement ')' statement 	{ $$ = "";
+    																	for(int i = 0; i < tabNum; i++)
+    																		$$ = $$ + '\t';
+    																	$$ = $$ + $1 + $2 + $3 + $4 + $5 + $6;
+    																	}
+    | FOR '(' for_expression_statement for_expression_statement expression ')' statement 	{ $$ = "";
+    																				for(int i = 0; i < tabNum; i++)
+    																					$$ = $$ + '\t';
+    																				$$ = $$ + $1 + $2 + $3 + $4 + $5 + $6 + $7;
+    																				}
     ;
 
 jump_statement
-    : CONTINUE ';' {$$ = $1 + $2 + '\n';}
-    | BREAK ';' {$$ = $1 + $2 + '\n';}
-    | RETURN ';' {$$ = $1 + $2 + '\n';}
-    | RETURN expression ';' {$$ = $1 + " " + $2 + $3 + '\n';}
+    : CONTINUE ';' { $$ = "";
+    				for(int i = 0; i < tabNum; i++)
+    					$$ = $$ + '\t';
+    				$$ = $$ + $1 + $2 + '\n';
+    				}
+    | BREAK ';' 	{ $$ = "";
+    				for(int i = 0; i < tabNum; i++)
+    					$$ = $$ + '\t';
+    				$$ = $$ + $1 + $2 + '\n';
+    				}
+    | RETURN ';' 	{ $$ = "";
+    				for(int i = 0; i < tabNum; i++)
+    					$$ = $$ + '\t';
+    				$$ = $$ + $1 + $2 + '\n';
+    				}
+    | RETURN expression ';' { $$ = "";
+    						for(int i = 0; i < tabNum; i++)
+    							$$ = $$ + '\t';
+    						$$ = $$ + $1 + " " + $2 + $3 + '\n';
+    						}
     ;
 
 %%
