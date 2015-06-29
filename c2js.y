@@ -49,8 +49,8 @@ comment
     ;
 
 string
-    : primary_expression            {$$ = $1}
-    | primary_expression string     {$$ = $1 + " " + $2}
+    : primary_expression            {$$ = $1;}
+    | primary_expression string     {$$ = $1 + " " + $2;}
     ;
 
 function_declaration
@@ -94,11 +94,11 @@ parameter_declaration
     ;
 
 compound_statement
-    : '{' '}' {$$ = $1 + $2;}
-    | '{' statement_list '}' {$$ = $1 + $2 + $3;}
-    | '{' variable_declarations statement_list '}' {$$ = $1 + $2 + $3 + $4;}
+    : '{' '}' {$$ = $1 + '\n'+ $2 + '\n';}
+    | '{' statement_list '}'     {$$ = $1 + '\n' + $2 + $3 + '\n';}
+    | '{' variable_declarations statement_list '}'     {$$ = $1 + '\n' + $2 + $3 + $4 + '\n';}
     ;
-
+    
 variable_declarations
     : variable_declaration {$$ = $1;}
     | variable_declarations variable_declaration {$$ = $1 + $2;}
@@ -283,7 +283,7 @@ statement
     ;
 
 expression_statement
-    : ';' {$$ = $1;}
+    : ';' {$$ =  $1 + '\n';}
     | expression ';' {$$ = $1 + $2;}
     ;
 
@@ -299,10 +299,10 @@ iteration_statement
     ;
 
 jump_statement
-    : CONTINUE ';' {$$ = $1 + $2;}
-    | BREAK ';' {$$ = $1 + $2;}
-    | RETURN ';' {$$ = $1 + $2;}
-    | RETURN expression ';' {$$ = $1 + " " + $2 + $3;}
+    : CONTINUE ';' {$$ = $1 + $2 + '\n';}
+    | BREAK ';' {$$ = $1 + $2 + '\n';}
+    | RETURN ';' {$$ = $1 + $2 + '\n';}
+    | RETURN expression ';' {$$ = $1 + " " + $2 + $3 + '\n';}
     ;
 
 %%
