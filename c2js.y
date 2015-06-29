@@ -65,7 +65,7 @@ type_specifier
     ;
 
 declarator
-    : IDENTIFIER {$$ = $1;}
+    : identifier_list {$$ = $1;}
     | declarator '[' ']' {$$ = $1;}
     | declarator '[' constant_expression ']' {$$ = $1 + " = new Array(" + $3 + ")";}
     ;
