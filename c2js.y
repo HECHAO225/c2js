@@ -54,7 +54,7 @@ string
     ;
 
 function_declaration
-    : type_specifier declarator compound_statement {$$ = "function" + $2 + $3;}
+    : type_specifier function_declarator compound_statement {$$ = "function" + $2 + $3;}
     ;
 
 type_specifier
@@ -68,9 +68,11 @@ declarator
     : IDENTIFIER {$$ = $1;}
     | declarator '[' ']' {$$ = $1;}
     | declarator '[' constant_expression ']' {$$ = $1 + " = new Array(" + $3 + ")";}
-    | IDENTIFIER '(' parameter_list ')' {$$ = $1 + $2 + $3 + $4;}
+    ;
+
+function_declarator
+    : IDENTIFIER '(' parameter_list ')' {$$ = $1 + $2 + $3 + $4;}
     | IDENTIFIER '(' ')' {$$ = $1 + $2 + $3;}
-    | declarator ',' identifier_list {$$ = $1 + $2 + $3;}
     ;
 
 identifier_list
