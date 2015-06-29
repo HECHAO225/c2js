@@ -95,8 +95,8 @@ parameter_declaration
 
 compound_statement
     : '{' '}' {$$ = $1 + $2; cout << "---------$$---------\n" << $$ << endl;}
-    | '{' statement_list '}' {$$ = $1 + $2 + $3; cout << "---------$$---------\n" << $$ << endl;}
-    | '{' variable_declarations statement_list '}' {$$ = $1 + $2 + $3 + $4; cout << "---------$$---------\n" << $$ << endl;}
+    | '{' statement_list '}' {$$ = $1 + $2 + $3; cout << "---------$1---------\n" << $1 << endl;}
+    | '{' variable_declarations statement_list '}' {$$ = $1 + $2 + $3 + $4; cout << "---------$1---------\n" << $1 << endl;}
     ;
 
 variable_declarations
