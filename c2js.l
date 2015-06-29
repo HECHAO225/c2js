@@ -8,8 +8,8 @@ E           [Ee][+-]?{Digit}+
 %{
 #include <iostream>
 #include <fstream>
-
-#define YYSTYPE char*
+using namespace std;
+#define YYSTYPE string
 #include "c2js.tab.h"
 
 using namespace std;
@@ -89,6 +89,7 @@ void showStr();
 
 void showStr()
 {
+    yylval = yytext;
 	cout<<yytext<<endl;
 }
 

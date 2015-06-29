@@ -54,7 +54,7 @@ string
     ;
 
 function_declaration
-    : type_specifier function_declarator compound_statement {$$ = "function" + $2 + $3; cout << $$ << endl;}
+    : type_specifier function_declarator compound_statement {$$ = "function " + $2 + $3; cout << $$ << endl;}
     ;
 
 type_specifier
@@ -94,9 +94,9 @@ parameter_declaration
     ;
 
 compound_statement
-    : '{' '}' {$$ = $1 + $2; cout << "---------$$---------\n" << $$ << endl;}
-    | '{' statement_list '}' {$$ = $1 + $2 + $3; cout << "---------$1---------\n" << $1 << endl;}
-    | '{' variable_declarations statement_list '}' {$$ = $1 + $2 + $3 + $4; cout << "---------$1---------\n" << $1 << endl;}
+    : '{' '}' {$$ = $1 + $2;}
+    | '{' statement_list '}' {$$ = $1 + $2 + $3;}
+    | '{' variable_declarations statement_list '}' {$$ = $1 + $2 + $3 + $4;}
     ;
 
 variable_declarations
@@ -104,7 +104,7 @@ variable_declarations
     | variable_declarations variable_declaration {$$ = $1 + $2;}
 
 variable_declaration
-    : type_specifier variable_declaration_list ';' {$$ = $1 + $2 + $3 + "\n";}
+    : type_specifier variable_declaration_list ';' {$$ = $1 + " " + $2 + $3 + "\n";}
     ;
 
 variable_declaration_list
@@ -213,9 +213,16 @@ unary_expression
 
 postfix_expression
     : primary_expression {$$ = $1;}
-    | postfix_expression '[' expression ']'
+    | postfix_expression '[' expression ']' {$$ = $1 + $2 + $3 + $4;}
     | postfix_expression '(' ')' {$$ = $1 + $2 + $3;}
-    | postfix_expression '(' argument_expression_list ')'
+    | postfix_expression '(' argument_expression_list ')' {
+        if ($1 == "strlen"){
+            $$ = $3 + "." + "length";
+        }
+        else {
+            $$ = $1 + $2 + $3 + $4;
+        }
+    }
     | postfix_expression '.' IDENTIFIER {$$ = $1 + $2 + $3;}
     | postfix_expression INC_OP {$$ = $1 + $2;}
     | postfix_expression DEC_OP {$$ = $1 + $2;}
@@ -262,7 +269,7 @@ statement_list
     | statement_list statement {$$ = $1 +  $2;}
 
 statement
-    : compound_statement {$$ = $1; cout << "----- COMPOUND -----\n"}
+    : compound_statement {$$ = $1;}
     | expression_statement {$$ = $1;}
     | selection_statement {$$ = $1;}
     | iteration_statement {$$ = $1;}
@@ -271,11 +278,11 @@ statement
 
 expression_statement
     : ';' {$$ = $1;}
-    | expression ';' {$$ = $1;}
+    | expression ';' {$$ = $1 + $2;}
     ;
 
 selection_statement
-    : IF '(' expression ')' statement {$$ = $1 + $2 + $3 + $4;}
+    : IF '(' expression ')' statement {$$ = $1 + $2 + $3 + $4 + $5;}
     | IF '(' expression ')' statement ELSE statement {$$ = $1 + $2 + $3 + $4 + $5 + $6 + $7;}
     ;
 
@@ -289,7 +296,7 @@ jump_statement
     : CONTINUE ';' {$$ = $1 + $2;}
     | BREAK ';' {$$ = $1 + $2;}
     | RETURN ';' {$$ = $1 + $2;}
-    | RETURN expression ';' {$$ = $1 + $2 + $3;}
+    | RETURN expression ';' {$$ = $1 + " " + $2 + $3;}
     ;
 
 %%
