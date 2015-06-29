@@ -16,7 +16,7 @@ int tabNum = 0;
 
 %}
 
-%token IDENTIFIER CONSTANT STRING_LITERAL
+%token IDENTIFIER CONST STRING_LITERAL
 %token INC_OP DEC_OP AND_OP OR_OP LE_OP GE_OP EQ_OP NE_OP
 %token VOID CHAR INT FLOAT DOUBLE
 %token LEFT_OP RIGHT_OP
@@ -40,8 +40,8 @@ program_unit
     ;
 
 include_declaration
-    : INCLUDE '<' IDENTIFIER '.' IDENTIFIER '>' {$$ = '';}
-    | INCLUDE '<' IDENTIFIER '>'                {$$ = '';}
+    : INCLUDE '<' IDENTIFIER '.' IDENTIFIER '>' {$$ = "";}
+    | INCLUDE '<' IDENTIFIER '>'                {$$ = "";}
     ;
 
 comment
@@ -55,12 +55,14 @@ string
 
 function_declaration
     : type_specifier declarator compound_statement {$$ = "function" + $2 + $3;}
+    ;
 
 type_specifier
     : VOID  {$$ = "var";}
     | CHAR  {$$ = "var";}
     | INT   {$$ = "var";}
     | FLOAT {$$ = "var";}
+    ;
 
 declarator
     : IDENTIFIER {$$ = $1;}
@@ -224,7 +226,7 @@ primary_expression
             $$ = $1;
         }
     }
-    | CONSTANT {$$ = $1;}
+    | CONST {$$ = $1;}
     | STRING_LITERAL {$$ = $1;}
     | '(' expression ')' {$$ = $1 + $2 + $3;}
     ;
@@ -282,7 +284,7 @@ jump_statement
 
 void yyerror(const char* str)
 {
-    cout << "error: " << str << endl;
+    cout << "ERROR: " << str << endl;
 }
 
 extern FILE *yyin;
@@ -294,13 +296,13 @@ int main(int argc, char* argv[])
     }
     else
     {
-        cout << "Error: Please enter the file name\n";
+        cout << "ERROR: Please enter the file name\n";
         return 0;
     }
 
     if (yyin == NULL)
     {
-        cout << "Error: Can't open file\n";
+        cout << "ERROR: Can't open file\n";
         return 0;
     }
 

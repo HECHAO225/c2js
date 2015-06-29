@@ -10,6 +10,7 @@ E           [Ee][+-]?{Digit}+
 #include <fstream>
 
 #define YYSTYPE char*
+#include "c2js.tab.h"
 
 using namespace std;
 
@@ -23,7 +24,7 @@ void showStr();
 %}
 
 %%
-"//"            { cout<<"//: 		"; showStr();  return(COMMENT);	} 
+"//"            { cout<<"//: 		"; showStr();  return(COMMENT);	}
 "char"          { cout<<"CHAR: 		"; showStr();  return(CHAR);	}
 "double"        { cout<<"DOUBLE: 	"; showStr();  return(DOUBLE);	}
 "float"         { cout<<"FLOAT: 	"; showStr();  return(FLOAT); 	}
@@ -51,26 +52,26 @@ void showStr();
 "!="            { cout<<"!=:	"; showStr(); return(NE_OP); 	}
 "&&"            { cout<<"&&:	"; showStr(); return(AND_OP);	}
 "||"            { cout<<"||:	"; showStr(); return(OR_OP); 	}
-"-"             { cout<<"-:		"; showStr(); return("-"); 		}
-"+"             { cout<<"+:		"; showStr(); return("+"); 		}
-"*"             { cout<<"*:		"; showStr(); return("*"); 		}
-"/"             { cout<<"/:		"; showStr(); return("/"); 		}
-"%"             { cout<<"%:		"; showStr(); return("%"); 		}
-"\\"            { cout<<"\\:	"; showStr(); return("\\"); 	}
-"<"             { cout<<"<:		"; showStr(); return("<"); 		}
-"."             { cout<<".:		"; showStr(); return("."); 		}
-">"             { cout<<">:		"; showStr(); return(">"); 		}
-","             { cout<<",:		"; showStr(); return(","); 		}
-":"             { cout<<"::		"; showStr(); return(":"); 		}
-";"             { cout<<";:		"; showStr(); return(";"); 		}
-"="             { cout<<"=:		"; showStr(); return("="); 		}
-"("             { cout<<"(:		"; showStr(); return("("); 		}
-")"             { cout<<"):		"; showStr(); return(")"); 		}
-"{"     		{ cout<<"{:		"; showStr(); return("{"); 		}
-"}"      		{ cout<<"}:		"; showStr(); return("}"); 		}
-"["      		{ cout<<"[:		"; showStr(); return("["); 		}
-"]"      		{ cout<<"]:		"; showStr(); return("]"); 		}
-"\""			{ cout<<"\":	"; showStr(); return("\"");		}
+"-"             { cout<<"-:		"; showStr(); return('-'); 		}
+"+"             { cout<<"+:		"; showStr(); return('+'); 		}
+"*"             { cout<<"*:		"; showStr(); return('*'); 		}
+"/"             { cout<<"/:		"; showStr(); return('/'); 		}
+"%"             { cout<<"%:		"; showStr(); return('%'); 		}
+"\\"            { cout<<"\\:	"; showStr(); return('\\'); 	}
+"<"             { cout<<"<:		"; showStr(); return('<'); 		}
+"."             { cout<<".:		"; showStr(); return('.'); 		}
+">"             { cout<<">:		"; showStr(); return('>'); 		}
+","             { cout<<",:		"; showStr(); return(','); 		}
+":"             { cout<<"::		"; showStr(); return(':'); 		}
+";"             { cout<<";:		"; showStr(); return(';'); 		}
+"="             { cout<<"=:		"; showStr(); return('='); 		}
+"("             { cout<<"(:		"; showStr(); return('('); 		}
+")"             { cout<<"):		"; showStr(); return(')'); 		}
+"{"     		{ cout<<"{:		"; showStr(); return('{'); 		}
+"}"      		{ cout<<"}:		"; showStr(); return('}'); 		}
+"["      		{ cout<<"[:		"; showStr(); return('['); 		}
+"]"      		{ cout<<"]:		"; showStr(); return(']'); 		}
+"\""			{ cout<<"\":	"; showStr(); return('\"');		}
 
 
 
@@ -86,12 +87,6 @@ void showStr();
 void showStr()
 {
 	cout<<yytext<<endl;
-}
-
-int main()
-{
-	yylex(); /* 进行分析 */
-	return 0;
 }
 
 int yywrap()

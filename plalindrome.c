@@ -17,7 +17,7 @@ int isPlalindrome(char str[], int len)
 
 int main()
 {
-    char* str = "abcdedca";
+    char str[] = "abcdedca";
     int len = strlen(str);
     if (isPlalindrome(str, len) == 1)
     {
