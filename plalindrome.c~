@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-//test comment
+//test
 int isPlalindrome(char str[], int len)
 {
     int i;
